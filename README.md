@@ -10,5 +10,5 @@ Projeto focado no desenvolvimento em C++ dos seguintes algoritmos estudados em T
 
 > ## Desenvolvedores
 
-- João Victor Cavalcante Lima [Clique aqui para acessar o perfil no github](https://github.com/Jvictor-7/)
-- José Fabiano Silva de Andrade [Clique aqui para acessar o perfil no github](https://github.com/radbios/)
+- João Victor Cavalcante Lima - [Perfil no Github](https://github.com/Jvictor-7/)
+- José Fabiano Silva de Andrade - [Perfil no Github](https://github.com/radbios/)
