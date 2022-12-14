@@ -1,11 +1,18 @@
-#include <heap.h>
+#include "heap.h"
 
-#define INFINITO 9999
-
-typedef struct heap{
-    int id;
-    int prioridade;
-} Heap;
+void initHeap(Heap *arr, int qtd_V, int origem, int *tam){
+    for (int i = 0; i < qtd_V; i++)
+    {
+        if ( (i + 1)  != origem)
+        {
+            inserirFila(arr, MIN_PRIORITY, tam, i+1);
+        }
+        else
+        {
+            inserirFila(arr, MAX_PRIORITY, tam, i+1);
+        }
+    }  
+}
 
 int filhoMaiorPrioridade(Heap *arr, int filhoEsquerda, int filhoDireita){
     if(arr[filhoDireita].prioridade < arr[filhoEsquerda].prioridade){
@@ -14,8 +21,8 @@ int filhoMaiorPrioridade(Heap *arr, int filhoEsquerda, int filhoDireita){
     return filhoEsquerda;
 }
 
-Heap *menorPrioridade(Heap *arr){
-    return &arr[0];
+int maiorPrioridade(Heap *arr){
+    return arr[0].id;
 }
 
 void trocaPaiFilho(Heap *arr, int filho, int pai){
@@ -50,25 +57,33 @@ void extrairMin(Heap *arr, int *tam){
 
 
 void mudarPrioridade(Heap *arr, int ind, int prioridade){
-    if(prioridade > arr[ind].prioridade){
+    int aux = 0;
+    while (arr[aux].id != ind + 1)
+    {
+        aux++;
+    }
+    
+    if(prioridade > arr[aux].prioridade){
         printf("ERRO - Prioridade não aumentada.");
     }
 
-    arr[ind].prioridade = prioridade;
+    arr[aux].prioridade = prioridade;
 
-    int pai = (ind-1)/2;
+    int pai = (aux-1)/2;
 
     while (prioridade < arr[pai].prioridade)
     {
-        trocaPaiFilho(arr, ind, pai);
-        ind = pai;
-        pai = (ind-1)/2;
+        trocaPaiFilho(arr, aux, pai);
+        aux = pai;
+        pai = (aux-1)/2;
     }
     
 }
 
-void inserirFila(Heap *arr, int prioridade, int *tam){
+void inserirFila(Heap *arr, int prioridade, int *tam, int id){
     *tam = *tam + 1;
     arr[*tam - 1].prioridade = INFINITO;
+    arr[*tam - 1].id = id;
+
     mudarPrioridade(arr, *tam - 1, prioridade);
 }
