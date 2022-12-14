@@ -27,9 +27,15 @@ int main(int arg, char *argv[]){
             output = i + 1;
         }
         else if(strcmp(argv[i], "-f") == 0){
-            inpt = i + 1;
+            if (strcmp(argv[i + 1], "-s") == 0){
+                inpt = i + 2;
+            }
+            else{
+                inpt = i + 1;
+            }
         }
         else if(strcmp(argv[i], "-s") == 0){
+            
             soluc = TRUE;
         }
         else if(strcmp(argv[i], "-i") == 0){
@@ -39,8 +45,6 @@ int main(int arg, char *argv[]){
             sscanf(argv[i + 1], "%d", &vertFinal);
         }
     }
-
-    printf(" vert inicial = %d\n", vertInicial);
 
     // --- ENTRADA ---
     int qtd_V, qtd_A;
@@ -81,19 +85,96 @@ int main(int arg, char *argv[]){
     fclose(entrada);
 
     // --- Imprimindo matriz ---
-    ImprimeMatriz(qtd_V, matriz_adj);
+    // ImprimeMatriz(qtd_V, matriz_adj);
+
+    int distancia[qtd_V], prev[qtd_V];
 
     // --- Chamando o algoritmo de Dijkstra ---
-    dijkstra(qtd_V, matriz_adj,3);
-
-
-
-
+    dijkstra(qtd_V, matriz_adj, vertInicial, distancia, prev);
 
     // --- SAÍDA ---
-    FILE *out = fopen(argv[output], "w");
-    fprintf(out, "okei");
-    fclose(out);
-    
+    if (output != 0)
+    {
+        FILE *saida = fopen(argv[output], "w");
+        if (vertFinal != 0)
+        {
+            fprintf(saida, "%d", distancia[vertFinal - 1]);
+            if(soluc == TRUE){
+                int indPai = vertFinal - 1;
+                while (prev[indPai] != -1)
+                {
+                    fprintf(saida, " ");
+                    fprintf(saida ,"(%d, %d)", indPai + 1, prev[indPai] + 1);
+                    indPai = prev[indPai];
+                }
+            }
+            
+        }
+        if (vertFinal == 0 && vertInicial != 0)
+        {
+            for (int i = 0; i < qtd_V; i++)
+            {
+                fprintf(saida, "%d:%d", i + 1, distancia[i]);
+                if(soluc == TRUE){
+                    int indPai = i;
+                    while (prev[indPai] != -1)
+                    {
+                        fprintf(saida, " ");
+                        fprintf(saida, "(%d, %d)", indPai + 1, prev[indPai] + 1);
+                        indPai = prev[indPai];
+                    }
+                    if(i + 1 != qtd_V){
+                        fprintf(saida, "\n");
+                    }
+                }
+                else{
+                    if(i+1 != qtd_V){
+                        fprintf(saida, " ");
+                    }
+                }
+            }
+        }
+        fclose(saida);
+    }
+    else
+    {
+        if (vertFinal != 0)
+        {
+            printf("%d\n", distancia[vertFinal - 1]);
+            if(soluc == TRUE){
+                int indPai = vertFinal - 1;
+                while (prev[indPai] != -1)
+                {
+                    printf(" ");
+                    printf("(%d, %d)", indPai + 1, prev[indPai] + 1);
+                    indPai = prev[indPai];
+                }
+                printf("\n");
+            }
+        }
+        else if (vertFinal == 0 && vertInicial != 0)
+        {
+            for (int i = 0; i < qtd_V; i++)
+            {
+                printf("%d:%d", i + 1, distancia[i]);
+                if(soluc == TRUE){
+                    int indPai = i;
+                    while (prev[indPai] != -1)
+                    {
+                        printf(" ");
+                        printf("(%d, %d)", indPai + 1, prev[indPai] + 1);
+                        indPai = prev[indPai];
+                    }
+                    printf("\n");
+                }
+
+                if(i + 1 != qtd_V){
+                    printf("\n");
+                }
+                
+            }
+        }
+    }
+     
     return 0;
 }
