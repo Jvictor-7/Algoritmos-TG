@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include "functions.c"
 
-
-
 typedef int bool;
 
 int main(int arg, char *argv[]){
@@ -96,13 +94,7 @@ int main(int arg, char *argv[]){
             {
                 fprintf(saida, "%d", distancia[vertFinal - 1]);
                 if(soluc == TRUE){
-                    int indPai = vertFinal - 1;
-                    while (prev[indPai] != -1)
-                    {
-                        fprintf(saida, " ");
-                        fprintf(saida ,"(%d, %d)", indPai + 1, prev[indPai] + 1);
-                        indPai = prev[indPai];
-                    }
+                    solucaoArq(saida, prev, vertFinal-1, vertInicial-1);
                 }
                 
             }
@@ -113,12 +105,7 @@ int main(int arg, char *argv[]){
                     fprintf(saida, "%d:%d", i + 1, distancia[i]);
                     if(soluc == TRUE){
                         int indPai = i;
-                        while (prev[indPai] != -1)
-                        {
-                            fprintf(saida, " ");
-                            fprintf(saida, "(%d, %d)", indPai + 1, prev[indPai] + 1);
-                            indPai = prev[indPai];
-                        }
+                        solucaoArq(saida, prev, i, vertInicial-1);
                         if(i + 1 != qtd_V){
                             fprintf(saida, "\n");
                         }
@@ -136,16 +123,9 @@ int main(int arg, char *argv[]){
         {
             if (vertFinal != 0)
             {
-                printf("%d\n", distancia[vertFinal - 1]);
+                printf("%d", distancia[vertFinal - 1]);
                 if(soluc == TRUE){
-                    int indPai = vertFinal - 1;
-                    while (prev[indPai] != -1)
-                    {
-                        printf(" ");
-                        printf("(%d, %d)", indPai + 1, prev[indPai] + 1);
-                        indPai = prev[indPai];
-                    }
-                    printf("\n");
+                    solucaoPrint(prev, vertFinal - 1, vertInicial - 1);
                 }
             }
             else if (vertFinal == 0 && vertInicial != 0)
@@ -154,14 +134,7 @@ int main(int arg, char *argv[]){
                 {
                     printf("%d:%d", i + 1, distancia[i]);
                     if(soluc == TRUE){
-                        int indPai = i;
-                        while (prev[indPai] != -1)
-                        {
-                            printf(" ");
-                            printf("(%d, %d)", indPai + 1, prev[indPai] + 1);
-                            indPai = prev[indPai];
-                        }
-                        printf("\n");
+                        solucaoPrint(prev, i, vertInicial - 1);
                     }
 
                     if(i + 1 != qtd_V){
@@ -170,6 +143,7 @@ int main(int arg, char *argv[]){
                     
                 }
             }
+            printf("\n");
         }  
     }
     else{
