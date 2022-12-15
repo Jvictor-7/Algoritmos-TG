@@ -1,10 +1,10 @@
-# Algoritmos-TG
+# Teoria dos Grafos - Algoritmos
 
 <hr>
 
 Projeto focado no desenvolvimento dos seguintes algoritmos estudados em Teoria dos Grafos: <strong>Dijkstra</strong>, <strong>Prim</strong>, <strong>Bellman-Ford</strong> e <strong>Kruskal</strong>.
 
-> ## Linguagem
+> ## Linguagens
 
 - C e C++
 
