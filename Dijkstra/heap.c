@@ -1,11 +1,6 @@
-#include <heap.h>
+#include "heap.h"
 
 #define INFINITO 9999
-
-typedef struct heap{
-    int id;
-    int prioridade;
-} Heap;
 
 int filhoMaiorPrioridade(Heap *arr, int filhoEsquerda, int filhoDireita){
     if(arr[filhoDireita].prioridade < arr[filhoEsquerda].prioridade){

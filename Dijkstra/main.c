@@ -17,7 +17,7 @@ int main(int arg, char *argv[]){
 
     bool soluc = FALSE;
 
-    for (int i = 0; i < arg; i++)
+    for (int i = 0; i < arg; i++) 
     {
         if(strcmp(argv[i], "-h") == 0){
             help();

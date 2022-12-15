@@ -1,6 +1,10 @@
 #ifndef HEAP
 #define HEAP
 
+typedef struct heap{
+    int id;
+    int prioridade;
+} Heap;
 
 int filhoMaiorPrioridade(Heap *arr, int filhoEsquerda, int filhoDireita);
 Heap *menorPrioridade(Heap *arr);
