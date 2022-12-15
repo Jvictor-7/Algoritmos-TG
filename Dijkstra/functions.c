@@ -47,13 +47,6 @@ void ImprimeMatriz(int qtd_V, int matriz[qtd_V][qtd_V]){
     }
 }
 
-<<<<<<< HEAD
-//Parâmetros de entrada: -i -s
-int dijkstra(int qtd_V, int grafo[qtd_V][qtd_V], int vert_origem){
-    int distancia[qtd_V], prev[qtd_V];
-
-    for (int i = 0; i < qtd_V; i++) distancia[i] = INFINITO;
-=======
 void init_(Heap *arr, int qtd_V, int distancia[], int prev[], int origem){
     for (int i = 0; i < qtd_V; i++)
     {
@@ -66,23 +59,17 @@ void init_(Heap *arr, int qtd_V, int distancia[], int prev[], int origem){
  
 // Algoritmo de Dijkstra
 int dijkstra(int qtd_V, int matriz_adj[qtd_V][qtd_V], int vert_origem, int distancia[], int prev[]){
->>>>>>> 3f542acfdc4f938d973d0e80649940dae339a97a
 
     int heapLenght = qtd_V;
 
     int *tam = (int *)malloc(sizeof(int));
     *tam = 0;
     Heap *H = (Heap *)malloc(sizeof(Heap)*heapLenght);
-    H[0] = vert_origem;
+    H[0].id = vert_origem;
 
-<<<<<<< HEAD
-    distancia[vert_origem - 1] = 0;
-    prev[vert_origem - 1] = 0;
-=======
     initHeap(H, qtd_V, vert_origem, tam);
     init_(H, qtd_V, distancia, prev, vert_origem - 1);
          
->>>>>>> 3f542acfdc4f938d973d0e80649940dae339a97a
 
     while (*tam != 0)
     {

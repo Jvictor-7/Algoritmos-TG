@@ -1,8 +1,6 @@
 #include "heap.h"
 
-<<<<<<< HEAD
 #define INFINITO 9999
-=======
 void initHeap(Heap *arr, int qtd_V, int origem, int *tam){
     for (int i = 0; i < qtd_V; i++)
     {
@@ -16,7 +14,6 @@ void initHeap(Heap *arr, int qtd_V, int origem, int *tam){
         }
     }  
 }
->>>>>>> 3f542acfdc4f938d973d0e80649940dae339a97a
 
 int filhoMaiorPrioridade(Heap *arr, int filhoEsquerda, int filhoDireita){
     if(arr[filhoDireita].prioridade < arr[filhoEsquerda].prioridade){
