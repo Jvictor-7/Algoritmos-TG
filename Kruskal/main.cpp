@@ -67,7 +67,7 @@ public:
     // UNION-FIND //
 
     // Algoritmo de Kruskal
-    void kruskal(string saida, bool soluc, int vertInicial){
+    void kruskal(string saida, bool soluc){
         vector<Aresta> arvore;
         int size_arestas = arestas.size();
 
@@ -79,28 +79,14 @@ public:
 
         // Inicializando todos os subconjuntos como conjuntos de um único elemento
         memset(subset, -1, sizeof(int) * V);
-        if (vertInicial == -1){
-            for (int i = 0; i < size_arestas; i++){
-                int v1 = buscar(subset, arestas[i].obterVertice1());
-                int v2 = buscar(subset, arestas[i].obterVertice2());
+        for (int i = 0; i < size_arestas; i++){
+            int v1 = buscar(subset, arestas[i].obterVertice1());
+            int v2 = buscar(subset, arestas[i].obterVertice2());
 
-                // Se v1 é diferente de v2, logo não forma ciclo e insere o vetor
-                if (v1 != v2){
-                    arvore.push_back(arestas[i]);
-                    unir(subset, v1, v2); // Une
-                }
-            }
-        }
-        else{
-            for (int i = vertInicial; i < size_arestas; i++){
-                int v1 = buscar(subset, arestas[i].obterVertice1());
-                int v2 = buscar(subset, arestas[i].obterVertice2());
-
-                // Se v1 é diferente de v2, logo não forma ciclo e insere o vetor
-                if (v1 != v2){
-                    arvore.push_back(arestas[i]);
-                    unir(subset, v1, v2); // Une
-                }
+            // Se v1 é diferente de v2, logo não forma ciclo e insere o vetor
+            if (v1 != v2){
+                arvore.push_back(arestas[i]);
+                unir(subset, v1, v2); // Une
             }
         }
 
@@ -114,7 +100,7 @@ public:
                     int v1 = arvore[i].obterVertice1() + 1;
                     int v2 = arvore[i].obterVertice2() + 1;
 
-                    arquivoS << "(" << v1 << "," << v2 << ") = " << arvore[i].obterPeso() << endl;
+                    arquivoS << "(" << v1 << "," << v2 << ") " << arvore[i].obterPeso() << endl;
                 }     
                 arquivoS.close();       
             }
@@ -150,7 +136,17 @@ public:
 };
 
 void help(){
-    printf("help\n");
+    printf("\n\t\t\t BEM VINDO...\n");
+    printf("Este codigo foi desenvolvido com o intuito de implementar o algoritmo de KRUSKAL.\n");
+    printf("Para rodar o codigo de forma correta, primeiramente deve-se usar o MAKEFILE atraves do terminal:\n");
+    printf("\t 1. Certifique-se de estar no diretorio do algoritmo\n");
+    printf("\t 2. Rode o comando make ou mingw32-make.\n");
+    printf("Apos rodar o make, temos alguns prefixos que podem ser usados para rodar o algoritmo:\n");
+    printf("\t-h : mostra o help\n\t-o <arquivo> : redireciona a saida para o arquivo\n\t-f <arquivo> : indica o arquivo que contem o grafo de entrada\n\t-s : mostra a solucao\n\t-i : vertice inicial (NAO FUNCIONA NESTE ALGORITMO)\n\t-l : vertice final (NAO FUNCIONA NESTE ALGORITMO)\n");
+    printf("\nEXEMPLOS DE COMANDOS:\n");
+    printf("\t./kruskal -f -s entrada.txt -o saida.txt\n");
+    printf("\t./kruskal -f entrada.txt\n");
+    printf("\t./kruskal -h\n");
 }
 
 int main(int arg, char *argv[])
@@ -188,19 +184,16 @@ int main(int arg, char *argv[])
             soluc = true;     
         }
         else if(strcmp(argv[i], "-i") == 0){
-            sscanf(argv[i + 1], "%d", &vertInicial);
-            vertInicial -= 1;
-
-            // printf("Esta funcao nao esta habilitada para esse tipo de algoritmo.\n");
-            // printf("Tente rodar: ./kruskal -f -s entrada.txt\n");
-            // printf("Ou: ./kruskal -f -s entrada.txt -o saida.txt\n");
-            // printf("Saindo do programa...\n");
-            // exit( 3 );    
+            printf("Este prefixo nao esta habilitada para esse tipo de algoritmo.\n");
+            printf("Tente rodar novamente sem definir um vertice final.\n");
+            printf("Saindo do programa...\n");
+            exit( 3 );  
         }
         else if(strcmp(argv[i], "-l") == 0){
-            printf("Esta funcao nao esta habilitada para esse tipo de algoritmo.\n");
+            printf("Este prefixo nao esta habilitada para esse tipo de algoritmo.\n");
             printf("Tente rodar: ./kruskal -f -s entrada.txt\n");
             printf("Ou: ./kruskal -f -s entrada.txt -o saida.txt\n");
+            printf("Ou: ./kruskal -f entrada.txt -o saida.txt\n");
             printf("Saindo do programa...\n");
             exit( 3 );     
         }
@@ -211,7 +204,6 @@ int main(int arg, char *argv[])
     ifstream arquivoE(entrada);
 
     arquivoE >> qtd_V >> qtd_A;
-
 
     Grafo g(qtd_V);
 
@@ -226,14 +218,8 @@ int main(int arg, char *argv[])
 
     arquivoE.close();        
 
-    if(vertInicial + 1> qtd_V){
-        printf("Digite um vertice inicial valido. De %d a %d\n", 1, qtd_V);
-        printf("Saindo do programa...");
-        exit(3);
-    }
-
     // Adicionando as arestas
-    g.kruskal(saida, soluc, vertInicial);
+    g.kruskal(saida, soluc);
 
     return 0;
 }

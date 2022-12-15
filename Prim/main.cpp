@@ -2,12 +2,21 @@
 
 using namespace std;
 
-//Main
-// --- ENTRADA ---
 int N, M;
 
 void help(){
-    printf("help\n");
+    printf("\n\t\t\t BEM VINDO...\n");
+    printf("Este codigo foi desenvolvido com o intuito de implementar o algoritmo de PRIM.\n");
+    printf("Para rodar o codigo de forma correta, primeiramente deve-se usar o MAKEFILE atraves do terminal:\n");
+    printf("\t 1. Certifique-se de estar no diretorio do algoritmo\n");
+    printf("\t 2. Rode o comando make ou mingw32-make.\n");
+    printf("Apos rodar o make, temos alguns prefixos que podem ser usados para rodar o algoritmo:\n");
+    printf("\t-h : mostra o help\n\t-o <arquivo> : redireciona a saida para o arquivo\n\t-f <arquivo> : indica o arquivo que contem o grafo de entrada\n\t-s : mostra a solucao\n\t-i : vertice inicial\n\t-l : vertice final (NAO FUNCIONA NESTE ALGORITMO)\n");
+    printf("\nEXEMPLOS DE COMANDOS:\n");
+    printf("\t./prim -f -s entrada.txt -o saida.txt\n");
+    printf("\t./prim -f entrada.txt\n");
+    printf("\t./prim -h\n");
+    printf("\t./prim -f -s entrada.txt -i 1 -o saida.txt\n");
 }
 
 int main(int arg, char *argv[]) {
@@ -29,14 +38,17 @@ int main(int arg, char *argv[]) {
             saida = argv[output];
         }
         else if(strcmp(argv[i], "-f") == 0){
-            inpt = i + 1;
-            printf("Arquivo de entrada: %s\n", argv[inpt]);
-            entrada = argv[inpt];
+            if (strcmp(argv[i + 1], "-s") == 0){
+                inpt = i + 2;
+                entrada = argv[inpt];
+            }
+            else{
+                inpt = i + 1;
+                entrada = argv[inpt];
+            }
         }
         else if(strcmp(argv[i], "-s") == 0){
-            soluc = true;
-            printf("Erro de sistema...");
-            exit( 3 );      
+            soluc = true;     
         }
         else if(strcmp(argv[i], "-i") == 0){
             sscanf(argv[i + 1], "%d", &vertInicial);
@@ -52,7 +64,6 @@ int main(int arg, char *argv[]) {
     ifstream arquivoE(entrada);
 
     while (arquivoE >> N >> M  and N) {
-
         vector< vector<pair<int,int> > > G(N);
         // Montando o grafo
         for (int i = 0; i < M; i++) {
@@ -69,58 +80,67 @@ int main(int arg, char *argv[]) {
         priority_queue< pair<int,int> > prim;
 
         vector<bool> mark(N, false);
+        vector<int> prev(N, -1);
 
         mark[vertInicial - 1] = true;
+        prev[vertInicial - 1] = vertInicial - 1;         
 
-        // Adicionando todos que estão ligados ao verticel inicial na fila de prioridade
+        // Adicionando todos que estão ligados ao vertice inicial na fila de prioridade
         for(pair<int,int> ed: G[vertInicial - 1]){
             prim.push( { -ed.second, ed.first } );
         }
 
+        ofstream arquivoS;
+        arquivoS.open(saida);    
+
         int soma = 0;
         while (prim.size()) {
-            // menor.first é o peso
-            int v_anterior, peso_anterior;
+            // menor.first é o menor peso do par de vértices da fila
+            // menor.second é o vertice de destino
+            int vertSeguinte;
+
             // Pegando a menor aresta, levando ao topo e removendo
             pair<int,int> menor = prim.top();
+            vertSeguinte = menor.second;
             prim.pop();
             // Se eu ja visitei o vertice, continue e pegue outra aresta
             if(mark[menor.second] == true){
-                cout << "O vertice " << menor.second+1 << " foi visitado." << endl;
-                v_anterior = menor.second+1;
-                cout << "Vertice atual: " << menor.second+1 << " foi visitado." << endl;
-
+                vertInicial = vertSeguinte+1;
                 continue;
             }
-            else{
-                if (v_anterior == N){
-                    v_anterior = v_anterior / 2;
-                }
-                cout << menor.second+1 << " nao foi visitado." << endl;
-                cout << "entrando na aresta com vertice atual: " << v_anterior << " "<< "vertice destino: " << menor.second+1 << " com peso: " << -menor.first << endl;
-                v_anterior = menor.second+1;  
-                cout << "vertice atual: "<< v_anterior << endl;
-            }
-
 
             soma += -menor.first;
             //Marcando como visitado
             mark[menor.second] = true;
+
+            if (soluc){
+                if (vertInicial == 6){
+                    arquivoS << "("<< vertInicial/2 << ","<< vertSeguinte+1 << ") ";
+                }
+                else{
+                    arquivoS << "("<< vertInicial << ","<< vertSeguinte+1 << ") ";
+                }
+            }
+
             //Pegando todas as arestas que estão saindo deste vertice e adicionando na fila de prioridade
             for(pair<int,int> ed: G[menor.second]){
                 prim.push( { -ed.second, ed.first } );
             }
+            vertInicial = vertSeguinte+1;
         }
-        
-        if (saida != ""){
-            cout << "A resposta esta no arquivo de saida: " << saida << endl;
-            ofstream arquivoS;
-            arquivoS.open("saida");    
-            arquivoS << soma;
-            arquivoS.close();       
-        }
-        else {
-            cout << soma << endl;
+        arquivoS.close();        
+        if (!soluc){
+            if (saida != ""){
+                cout << "A resposta esta no arquivo de saida: " << saida << endl;
+                ofstream arquivoS;
+                arquivoS.open(saida);    
+                arquivoS << soma;
+                arquivoS.close();       
+            }
+            else {
+                cout << soma << endl;
+            }
+
         }
     }
 
