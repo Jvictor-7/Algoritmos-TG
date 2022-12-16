@@ -94,5 +94,7 @@ int dijkstra(int qtd_V, int matriz_adj[qtd_V][qtd_V], int vert_origem, int dista
         }
         
     }
+    free(tam);
+    free(H);
     return 0;
 }
